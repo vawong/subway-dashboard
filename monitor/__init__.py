@@ -4,6 +4,9 @@ import markdown
 import os
 import shelve
 import flask.scaffold
+# import gtfs_realtime_pb2
+# import grequests
+import requests
 flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func
 
 from flask import Flask, g
@@ -15,6 +18,20 @@ app = Flask(__name__)
 
 # Create the API
 api = Api(app)
+
+urls = [
+    'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace',
+    'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-bdfm',
+    'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-g',
+    'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-jz',
+    'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-nqrw',
+    'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l',
+    'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs',
+    'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-si'
+]
+
+rs = (requests.get(u) for u in urls)
+print('response_total', rs)
 
 def get_db():
     db = getattr(g, '_database', None)
@@ -79,6 +96,8 @@ class Subway(Resource):
         # If the key does not exist in the data store, return a 404 error
         if not (identifier in shelf):
             return {'message': 'Subway not found', 'data': {}}, 404
+
+        
 
         return {'message': 'Subway found', 'data': shelf[identifier]}, 200
     
