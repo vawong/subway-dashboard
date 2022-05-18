@@ -5,6 +5,6 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-ADD . .
+COPY . .
 
-CMD ["python", "./rut.py"]
+CMD ["python", "./run.py"]

@@ -1,9 +1,10 @@
 version: '3.4'
 
 services:
-  device-registry:
+  monitor:
     build: .
+    tty: true
     volumes:
       - .:/usr/src/app
     ports:
-      - 5000:80
+      - "5000:80"
